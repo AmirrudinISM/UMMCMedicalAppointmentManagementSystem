@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import com.unikl.umams.utilities.*;
 import com.unikl.umams.entities.*;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 /**
  *
  * @author Amirrudin
@@ -137,5 +139,76 @@ public class DBController {
         }
        
         return loggedInPatient;
+    }
+    
+    void createAppointment(Appointment inAppointment){
+        try {
+            pstmt = conn.prepareStatement("INSERT into appointments (AppointmentID, CreatedTime, Symptoms, OtherDescription, AppointmentDate, AppointmentTime, AppointmentStatus, Weight, BloodPressure, Temperature, OxygenLevel, AdditionalNotes, Diagnosis, PatientID, DoctorID)"
+                    + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            
+            pstmt.setString(1, IDGenerator.generateAppointmentID(10));
+            pstmt.setString(2, inAppointment.getCreatedDateTime());
+            pstmt.setString(3, inAppointment.getSymptoms());
+            pstmt.setString(4, inAppointment.getOtherDescription());
+            pstmt.setString(5, inAppointment.getAppointmentDate());
+            pstmt.setString(6, inAppointment.getAppointmentTime());
+            pstmt.setString(7, inAppointment.getAppointmentStatus());
+            pstmt.setFloat(8, inAppointment.getWeight());
+            pstmt.setFloat(9, inAppointment.getBloodPressure());
+            pstmt.setFloat(10, inAppointment.getTemperature());
+            pstmt.setFloat(11, inAppointment.getOxygenLevel());
+            pstmt.setString(12, inAppointment.getAdditionalNotes());
+            pstmt.setString(13, inAppointment.getDiagnosis());
+            pstmt.setString(14, inAppointment.getPatientID());
+            pstmt.setString(15, inAppointment.getDoctorID());
+            
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    ArrayList<Appointment> getAppointments(String patientID) throws SQLException{
+        ArrayList<Appointment> tempArray = new ArrayList<>();
+        pstmt = conn.prepareStatement("SELECT AppointmentID, AppointmentDate, AppointmentTime, AppointmentStatus, CreatedTime FROM appointments WHERE PatientID = ?");
+        pstmt.setString(1, patientID);
+        ResultSet rs =  pstmt.executeQuery();
+            while (rs.next()) {
+                Appointment temp = new Appointment();
+                temp.setAppointmentID(rs.getString("AppointmentID"));
+                temp.setAppointmentDate(rs.getString("AppointmentDate"));
+                temp.setAppointmentTime(rs.getString("AppointmentTime"));
+                temp.setAppointmentStatus(rs.getString("AppointmentStatus"));
+                temp.setCreatedDateTime(rs.getString("CreatedTime"));
+           
+                tempArray.add(temp);
+            }
+        return tempArray;
+    }
+
+    Appointment viewAppointment(String appointmentID) throws SQLException {
+        Appointment appointment = new Appointment();
+        pstmt = conn.prepareStatement("SELECT * FROM appointments WHERE AppointmentID = ?");
+        pstmt.setString(1, appointmentID);
+        
+        ResultSet rs =  pstmt.executeQuery();
+        rs.next();
+        
+        appointment.setAppointmentID(rs.getString("AppointmentID"));
+        appointment.setCreatedDateTime(rs.getString("CreatedTime"));
+        appointment.setSymptoms(rs.getString("Symptoms"));
+        appointment.setOtherDescription(rs.getString("OtherDescription"));
+        appointment.setAppointmentDate(rs.getString("AppointmentDate"));
+        appointment.setAppointmentTime(rs.getString("AppointmentTime"));
+        appointment.setAppointmentStatus(rs.getString("AppointmentStatus"));
+        appointment.setWeight(rs.getFloat("Weight"));
+        appointment.setBloodPressure(rs.getFloat("BloodPressure"));
+        appointment.setTemperature(rs.getFloat("Temperature"));
+        appointment.setOxygenLevel(rs.getFloat("OxygenLevel"));
+        appointment.setAdditionalNotes(rs.getString("AdditionalNotes"));
+        appointment.setDiagnosis(rs.getString("Diagnosis"));
+        appointment.setDoctorID(rs.getString("DoctorID"));
+        
+        return appointment;
     }
 }

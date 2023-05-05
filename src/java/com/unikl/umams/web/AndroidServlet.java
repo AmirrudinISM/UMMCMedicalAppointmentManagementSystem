@@ -6,6 +6,7 @@
 package com.unikl.umams.web;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.unikl.umams.entities.*;
 import static java.lang.System.out;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.logging.Level;
@@ -26,15 +28,7 @@ import java.util.logging.Logger;
  */
 public class AndroidServlet extends HttpServlet {
     DBController db;
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -52,36 +46,18 @@ public class AndroidServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+   
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+   
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
         db = new DBController();
-        System.out.println("IM HERE___________________________");
-        
         System.out.println("Request type: " + request.getParameter("action"));
         
         if(request.getParameter("action").equals("register")){
@@ -122,6 +98,84 @@ public class AndroidServlet extends HttpServlet {
             else{
                 out.println("Password incorrect!");
             }
+        }
+        if(request.getParameter("action").equals("createAppointment")){
+            Appointment inAppointment = new Appointment();
+            
+            System.out.println("createdTime: " + request.getParameter("createdTime"));
+            inAppointment.setCreatedDateTime(request.getParameter("createdTime"));
+            
+            System.out.println("Symptoms: " + request.getParameter("symptoms"));
+            inAppointment.setSymptoms(request.getParameter("symptoms"));
+            
+            System.out.println("OtherDescription: " + request.getParameter("otherDescription"));
+            inAppointment.setOtherDescription(request.getParameter("otherDescription"));
+            
+            System.out.println("appointmentDate: " + request.getParameter("appointmentDate"));
+            inAppointment.setAppointmentDate(request.getParameter("appointmentDate"));
+            
+            System.out.println("appointmentTime: " + request.getParameter("appointmentTime"));
+            inAppointment.setAppointmentTime(request.getParameter("appointmentTime"));
+            
+            System.out.println("appointmentStatus: " + request.getParameter("appointmentStatus"));
+            inAppointment.setAppointmentStatus(request.getParameter("appointmentStatus"));
+            
+            System.out.println("patientID: " + request.getParameter("patientID"));
+            inAppointment.setPatientID(request.getParameter("patientID"));
+            
+            System.out.println("doctorID: " + request.getParameter("doctorID"));
+            inAppointment.setDoctorID(request.getParameter("doctorID"));
+            
+            db.createAppointment(inAppointment);
+            
+        }
+        
+        if(request.getParameter("action").equals("getAppointments")){
+            System.out.println("Hello");
+            JsonArray jsonArray = new JsonArray();
+            String patientID = request.getParameter("patientID");
+            System.out.println("Patient ID: " + patientID);
+            try {
+                ArrayList<Appointment> tempAppointments = db.getAppointments(patientID);
+                
+                for(int i = 0; i < tempAppointments.size(); i++){
+                    System.out.println("ID: " + tempAppointments.get(i).getAppointmentID() 
+                            + ", createdDate: " + tempAppointments.get(i).getCreatedDateTime()
+                            + ", Date: " + tempAppointments.get(i).getAppointmentDate()
+                            + ", Time: " + tempAppointments.get(i).getAppointmentTime()
+                            + ", Status: " + tempAppointments.get(i).getAppointmentStatus());
+                }
+                // Create a Gson instance
+                Gson gson = new Gson();
+
+                // Convert the ArrayList to a JSON string
+                String json = gson.toJson(tempAppointments);
+                System.out.println(json);
+                
+                response.setContentType("text/plain");
+                PrintWriter out = response.getWriter();
+                out.write(json);
+                out.flush();
+            } catch (SQLException ex) {
+                Logger.getLogger(AndroidJsonServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        if(request.getParameter("action").equals("viewAppointment")){
+            String appointmentID = request.getParameter("appointmentID");
+            Appointment appointment;
+            try {
+                appointment = db.viewAppointment(appointmentID);
+                Gson gson = new Gson();
+                String appointmentInfo = gson.toJson(appointment);
+                response.setContentType("text/plain");
+                PrintWriter out = response.getWriter();
+                out.print(appointmentInfo);
+                out.flush();
+            } catch (SQLException ex) {
+                Logger.getLogger(AndroidServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         }
     }
 
