@@ -5,10 +5,7 @@
         <group>
             <file>file:/C:/Users/Amirr/Documents/Projects/UMMCMedicalAppointmentManagementSystem/src/java/com/unikl/umams/web/DBController.java</file>
             <file>file:/C:/Users/Amirr/Documents/Projects/UMMCMedicalAppointmentManagementSystem/src/java/com/unikl/umams/web/AndroidJsonServlet.java</file>
-            <file>file:/C:/Users/Amirr/Documents/Projects/UMMCMedicalAppointmentManagementSystem/src/java/com/unikl/umams/entities/Appointment.java</file>
             <file>file:/C:/Users/Amirr/Documents/Projects/UMMCMedicalAppointmentManagementSystem/src/java/com/unikl/umams/web/AndroidServlet.java</file>
-            <file>file:/C:/Users/Amirr/Documents/Projects/UMMCMedicalAppointmentManagementSystem/src/java/com/unikl/umams/entities/Patient.java</file>
-            <file>file:/C:/Users/Amirr/Documents/Projects/UMMCMedicalAppointmentManagementSystem/src/java/com/unikl/umams/utilities/IDGenerator.java</file>
         </group>
     </open-files>
 </project-private>

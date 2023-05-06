@@ -157,10 +157,10 @@ public class DBController {
             pstmt.setFloat(9, inAppointment.getBloodPressure());
             pstmt.setFloat(10, inAppointment.getTemperature());
             pstmt.setFloat(11, inAppointment.getOxygenLevel());
-            pstmt.setString(12, inAppointment.getAdditionalNotes());
-            pstmt.setString(13, inAppointment.getDiagnosis());
+            pstmt.setString(12, "");//additional notes
+            pstmt.setString(13, "");//diagnosis
             pstmt.setString(14, inAppointment.getPatientID());
-            pstmt.setString(15, inAppointment.getDoctorID());
+            pstmt.setString(15, "");//doctorID
             
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -170,7 +170,7 @@ public class DBController {
     
     ArrayList<Appointment> getAppointments(String patientID) throws SQLException{
         ArrayList<Appointment> tempArray = new ArrayList<>();
-        pstmt = conn.prepareStatement("SELECT AppointmentID, AppointmentDate, AppointmentTime, AppointmentStatus, CreatedTime FROM appointments WHERE PatientID = ?");
+        pstmt = conn.prepareStatement("SELECT AppointmentID, AppointmentDate, AppointmentTime, AppointmentStatus, CreatedTime FROM appointments WHERE PatientID = ? ORDER BY AppointmentDate DESC");
         pstmt.setString(1, patientID);
         ResultSet rs =  pstmt.executeQuery();
             while (rs.next()) {
@@ -188,7 +188,7 @@ public class DBController {
 
     Appointment viewAppointment(String appointmentID) throws SQLException {
         Appointment appointment = new Appointment();
-        pstmt = conn.prepareStatement("SELECT * FROM appointments WHERE AppointmentID = ?");
+        pstmt = conn.prepareStatement("SELECT * FROM appointments WHERE AppointmentID = ? ");
         pstmt.setString(1, appointmentID);
         
         ResultSet rs =  pstmt.executeQuery();
@@ -210,5 +210,14 @@ public class DBController {
         appointment.setDoctorID(rs.getString("DoctorID"));
         
         return appointment;
+    }
+
+    void cancelAppointment(String appointmentID) throws SQLException {
+        
+        pstmt = conn.prepareStatement("UPDATE appointments SET AppointmentStatus = 'CANCELLED' WHERE AppointmentID = ?");
+        pstmt.setString(1, appointmentID);
+        pstmt.execute();
+        
+        
     }
 }

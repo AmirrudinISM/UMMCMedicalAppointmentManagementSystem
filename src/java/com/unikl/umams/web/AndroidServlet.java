@@ -123,8 +123,6 @@ public class AndroidServlet extends HttpServlet {
             System.out.println("patientID: " + request.getParameter("patientID"));
             inAppointment.setPatientID(request.getParameter("patientID"));
             
-            System.out.println("doctorID: " + request.getParameter("doctorID"));
-            inAppointment.setDoctorID(request.getParameter("doctorID"));
             
             db.createAppointment(inAppointment);
             
@@ -168,6 +166,7 @@ public class AndroidServlet extends HttpServlet {
                 appointment = db.viewAppointment(appointmentID);
                 Gson gson = new Gson();
                 String appointmentInfo = gson.toJson(appointment);
+                System.out.println(appointmentInfo);
                 response.setContentType("text/plain");
                 PrintWriter out = response.getWriter();
                 out.print(appointmentInfo);
@@ -177,6 +176,20 @@ public class AndroidServlet extends HttpServlet {
             }
             
         }
+        
+        if(request.getParameter("action").equals("cancelAppointment")){
+            String appointmentID = request.getParameter("appointmentID");
+            Appointment appointment;
+            
+            try {
+                db.cancelAppointment(appointmentID);
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+            
+        }
+        
+        
     }
 
     /**
