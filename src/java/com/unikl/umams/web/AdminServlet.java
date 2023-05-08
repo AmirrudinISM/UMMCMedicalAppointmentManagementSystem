@@ -5,9 +5,13 @@
  */
 package com.unikl.umams.web;
 
+import com.unikl.umams.entities.Appointment;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.System.out;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,7 +37,8 @@ public class AdminServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
+        DBController db = new DBController();
         String submitType = request.getParameter("submit");
         String appointmentID = request.getParameter("viewAppointment");
         if(submitType != null){
@@ -63,8 +68,18 @@ public class AdminServlet extends HttpServlet {
         }
         
         if(appointmentID != null){
-            out.println("<p>"+appointmentID+"</p>");
+            request.setAttribute("appointmentID", appointmentID);
+            
+            Appointment appointment = db.viewAppointment(appointmentID);
+            request.setAttribute("appointmentDate", appointment.getAppointmentDate());
+            request.setAttribute("appointmentTime", appointment.getAppointmentTime());
+            request.setAttribute("status", appointment.getAppointmentStatus());
+            request.setAttribute("symptoms", appointment.getSymptoms());
+            request.setAttribute("additionalDescription", appointment.getOtherDescription());
+            RequestDispatcher dispatcher = request.getRequestDispatcher("view_appointment.jsp");
+            dispatcher.forward(request, response);
         }
+        
         
     }
 
@@ -80,7 +95,11 @@ public class AdminServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -94,7 +113,11 @@ public class AdminServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
