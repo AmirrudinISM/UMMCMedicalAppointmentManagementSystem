@@ -101,7 +101,7 @@ public class DBController {
         return count;
     }
 
-    boolean verified(String email, String password) {
+    public boolean verified(String email, String password) {
         int count = 0;
         
         try {
@@ -120,7 +120,7 @@ public class DBController {
         return (count > 0);
     }
 
-    Patient getPatient(String email) {
+    public Patient getPatient(String email) {
         Patient loggedInPatient = new Patient();
         try {
             pstmt = conn.prepareStatement("SELECT PatientID, Email, FirstName, Password FROM patients WHERE Email = ?");
@@ -141,7 +141,7 @@ public class DBController {
         return loggedInPatient;
     }
     
-    void createAppointment(Appointment inAppointment){
+    public void createAppointment(Appointment inAppointment){
         try {
             pstmt = conn.prepareStatement("INSERT into appointments (AppointmentID, CreatedTime, Symptoms, OtherDescription, AppointmentDate, AppointmentTime, AppointmentStatus, Weight, BloodPressure, Temperature, OxygenLevel, AdditionalNotes, Diagnosis, PatientID, DoctorID)"
                     + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
@@ -168,7 +168,7 @@ public class DBController {
         }
     }
     
-    ArrayList<Appointment> getAppointments(String patientID) throws SQLException{
+    public ArrayList<Appointment> getAppointments(String patientID) throws SQLException{
         ArrayList<Appointment> tempArray = new ArrayList<>();
         pstmt = conn.prepareStatement("SELECT AppointmentID, AppointmentDate, AppointmentTime, AppointmentStatus, CreatedTime FROM appointments WHERE PatientID = ? ORDER BY AppointmentDate DESC");
         pstmt.setString(1, patientID);
@@ -185,8 +185,24 @@ public class DBController {
             }
         return tempArray;
     }
+    
+    public ArrayList<Appointment> getAllAppointments() throws SQLException{
+        ArrayList<Appointment> tempArray = new ArrayList<>();
+        pstmt = conn.prepareStatement("SELECT AppointmentID, AppointmentDate, AppointmentTime, AppointmentStatus FROM appointments ORDER BY AppointmentStatus DESC ");
+        ResultSet rs =  pstmt.executeQuery();
+            while (rs.next()) {
+                Appointment temp = new Appointment();
+                temp.setAppointmentID(rs.getString("AppointmentID"));
+                temp.setAppointmentDate(rs.getString("AppointmentDate"));
+                temp.setAppointmentTime(rs.getString("AppointmentTime"));
+                temp.setAppointmentStatus(rs.getString("AppointmentStatus"));
+           
+                tempArray.add(temp);
+            }
+        return tempArray;
+    }
 
-    Appointment viewAppointment(String appointmentID) throws SQLException {
+    public Appointment viewAppointment(String appointmentID) throws SQLException {
         Appointment appointment = new Appointment();
         pstmt = conn.prepareStatement("SELECT * FROM appointments WHERE AppointmentID = ? ");
         pstmt.setString(1, appointmentID);
@@ -212,7 +228,7 @@ public class DBController {
         return appointment;
     }
 
-    void cancelAppointment(String appointmentID) throws SQLException {
+    public void cancelAppointment(String appointmentID) throws SQLException {
         
         pstmt = conn.prepareStatement("UPDATE appointments SET AppointmentStatus = 'CANCELLED' WHERE AppointmentID = ?");
         pstmt.setString(1, appointmentID);

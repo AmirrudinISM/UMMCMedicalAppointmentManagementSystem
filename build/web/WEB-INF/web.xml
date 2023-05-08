@@ -8,6 +8,10 @@
         <servlet-name>AndroidJsonServlet</servlet-name>
         <servlet-class>com.unikl.umams.web.AndroidJsonServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DoctorServlet</servlet-name>
+        <servlet-class>com.unikl.umams.web.DoctorServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AndroidServlet</servlet-name>
         <url-pattern>/AndroidServlet</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>AndroidJsonServlet</servlet-name>
         <url-pattern>/AndroidJsonServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DoctorServlet</servlet-name>
+        <url-pattern>/DoctorServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
