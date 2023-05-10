@@ -119,6 +119,25 @@ public class DBController {
         }
         return (count > 0);
     }
+    
+    public boolean verifiedDoctor(String email, String password) {
+        int count = 0;
+        
+        try {
+            pstmt = conn.prepareStatement("SELECT COUNT(*) FROM doctors WHERE DoctorEmail = ? AND Password = ?");
+            pstmt.setString(1, email);
+            pstmt.setString(2, password);
+            
+            ResultSet rs =  pstmt.executeQuery();
+            rs.next();
+            count = rs.getInt(1);
+            
+            
+        } catch (SQLException e) {
+            System.out.println("ERROR!!! " + e.getMessage());
+        }
+        return (count > 0);
+    }
 
     public Patient getPatient(String email) {
         Patient loggedInPatient = new Patient();

@@ -42,6 +42,8 @@ public class AdminServlet extends HttpServlet {
         DBController db = new DBController();
         String submitType = request.getParameter("submit");
         String appointmentID = request.getParameter("viewAppointment");
+        HttpSession session;
+        RequestDispatcher dispatcher;
         if(submitType != null){
             switch(submitType){
                 case "adminLogin":
@@ -50,25 +52,25 @@ public class AdminServlet extends HttpServlet {
 
 
                     if(adminName.equals("admin@ummc.com") && adminPassword.equals("123")){
-                        HttpSession session = request.getSession();
+                        session = request.getSession();
                         session.setAttribute("email", "admin@ummc.com");
                         session.setAttribute("loggedIn", true);
 
-                        RequestDispatcher dispatcher = request.getRequestDispatcher("admin_dashboard.jsp");
+                        dispatcher = request.getRequestDispatcher("admin_dashboard.jsp");
                         dispatcher.forward(request, response);
                     }
                     else{
                         request.setAttribute("error", "Invalid credentials");
-                        RequestDispatcher dispatcher = request.getRequestDispatcher("admin_login.jsp");
+                        dispatcher = request.getRequestDispatcher("admin_login.jsp");
                         dispatcher.forward(request, response);
                     }
                     break;
                 
                 case "adminLogout":
-                    HttpSession session = request.getSession();
+                    session = request.getSession();
                     session.invalidate(); 
-                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("index.html"); // using RequestDispatcher method forward to login page.
-                    requestDispatcher.forward(request, response);
+                    dispatcher = request.getRequestDispatcher("admin_login.jsp"); // using RequestDispatcher method forward to login page.
+                    dispatcher.forward(request, response);
                     break;
                 
                 case "registerDoctor":
@@ -81,10 +83,33 @@ public class AdminServlet extends HttpServlet {
                     String password = request.getParameter("doctorPassword");
                     
                     db.registerDoctor(name, eduBackground, phoneNumber, location, email, password);
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("view_doctors.jsp"); // using RequestDispatcher method forward to login page.
+                    dispatcher = request.getRequestDispatcher("view_doctors.jsp"); // using RequestDispatcher method forward to login page.
                     dispatcher.forward(request, response);
                     break;
+                
+                case "doctorLogin":
+                    String doctorEmail = request.getParameter("email");
+                    String doctorPassword = request.getParameter("password");
                     
+                    if(db.verifiedDoctor(doctorEmail, doctorPassword)){
+                        session = request.getSession();
+                        session.setAttribute("email", doctorEmail);
+                        session.setAttribute("loggedIn", true);
+
+                        dispatcher = request.getRequestDispatcher("doctor_dashboard.jsp");
+                        dispatcher.forward(request, response);
+                    }else{
+                        request.setAttribute("error", "Invalid credentials");
+                        dispatcher = request.getRequestDispatcher("doctor_login.jsp");
+                        dispatcher.forward(request, response);
+                    }
+                
+                case "doctorLogout":
+                    session = request.getSession();
+                    session.invalidate(); 
+                    dispatcher = request.getRequestDispatcher("doctor_login.jsp"); // using RequestDispatcher method forward to login page.
+                    dispatcher.forward(request, response);
+                    break;
                     
                 default:
                     out.println("Error");
@@ -100,7 +125,7 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("status", appointment.getAppointmentStatus());
             request.setAttribute("symptoms", appointment.getSymptoms());
             request.setAttribute("additionalDescription", appointment.getOtherDescription());
-            RequestDispatcher dispatcher = request.getRequestDispatcher("view_appointment.jsp");
+            dispatcher = request.getRequestDispatcher("view_appointment.jsp");
             dispatcher.forward(request, response);
         }
         

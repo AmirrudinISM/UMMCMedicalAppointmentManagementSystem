@@ -64,7 +64,7 @@
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="index.html">Doctor Login</a>
+                                        <a class="small" href="doctor_login.jsp">Doctor Login</a>
                                     </div>
                                 </div>
                             </div>
