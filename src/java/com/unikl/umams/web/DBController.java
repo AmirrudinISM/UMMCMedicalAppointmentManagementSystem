@@ -236,4 +236,33 @@ public class DBController {
         
         
     }
+    
+    public ResultSet getDoctors() throws SQLException{
+        ResultSet res;
+        pstmt = conn.prepareStatement("SELECT * FROM doctors");
+        
+        res = pstmt.executeQuery();
+        return res;
+    }
+
+    void registerDoctor(String name, String eduBackground, String phoneNumber, String location, String email, String password) {
+        try {
+            pstmt = conn.prepareStatement("INSERT into doctors (DoctorID, FullName, EducationBackground, PhoneNumber, Password, DoctorEmail, Location)"
+                    + "VALUES (?,?,?,?,?,?,?)");
+            
+            pstmt.setString(1, IDGenerator.generatePatientID(8));
+            pstmt.setString(2, name);
+            pstmt.setString(3, eduBackground);
+            pstmt.setString(4, phoneNumber);
+            pstmt.setString(5, password);
+            pstmt.setString(6, email);
+            pstmt.setString(7, location);
+            
+            
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
 }

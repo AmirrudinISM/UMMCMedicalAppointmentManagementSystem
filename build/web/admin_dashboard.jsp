@@ -49,7 +49,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="admin_dashboard.jsp">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Manage Appointments</span></a>
             </li>
@@ -65,7 +65,7 @@
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="view_doctors.jsp">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Manage Doctors</span></a>
             </li>
@@ -208,8 +208,10 @@
                 </div>
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
+                    <form action="AdminServlet" method="POST">
+                        <button class="btn btn-primary" type="submit" name="submit" value="adminLogout">Logout</button>
+                    </form>
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
                 </div>
             </div>
         </div>

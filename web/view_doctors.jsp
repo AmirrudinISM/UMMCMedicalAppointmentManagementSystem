@@ -1,3 +1,4 @@
+<%@page import="java.sql.ResultSet"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Admin Dashboard</title>
+    <title>View Doctors</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -26,10 +27,8 @@
 </head>
 
 <body id="page-top">
-    <%@page import="com.unikl.umams.entities.Appointment" %>
-    <%@page import="java.util.ArrayList" %>
+    
     <jsp:useBean id="db" scope="page" class="com.unikl.umams.web.DBController" />
-
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -48,29 +47,23 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="admin_dashboard.jsp">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Manage Appointments</span></a>
             </li>
 
 
-            
-
-            
-
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-
             <!-- Nav Item - Tables -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="view_doctors.jsp">
                     <i class="fas fa-fw fa-table"></i>
-                    <span>Manage Doctors</span></a>
+                    <span>Manage Doctors</span>
+                </a>
             </li>
-
-            
 
         </ul>
         <!-- End of Sidebar -->
@@ -108,13 +101,12 @@
                 </nav>
                 <!-- End of Topbar -->
 
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
+               <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Appointments</h1>
-                    <p class="mb-4">View all created appointments and decide whether to confirm or cancel an appointment.</p>
-
+                    <h1 class="h3 mb-2 text-gray-800">Doctors</h1>
+                    <p class="mb-4">View all registered doctors and view their details.</p>
+                    <p><a href="register_doctor.jsp">Register Doctor</a></p>
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         
@@ -124,44 +116,43 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Appointment ID</th>
-                                            <th>Date</th>
-                                            <th>Time</th>
-                                            <th>Status</th>
+                                            <th>Doctor ID</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Phone Number</th>
                                             <th>View</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
                                             <th>#</th>
-                                            <th>Appointment ID</th>
-                                            <th>Date</th>
-                                            <th>Time</th>
-                                            <th>Status</th>
+                                            <th>Doctor ID</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Phone Number</th>
                                             <th>View</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        <% ArrayList<Appointment> appointmentList = db.getAllAppointments(); %>
-                                        <% for(int i = 0; i < appointmentList.size(); i++){ %>
+                                        <!-- code for table contents goes here-->
+                                        <% ResultSet rs = db.getDoctors(); int i = 0; %>
+                                        <% while (rs.next()){ %>
                                         <form action="AdminServlet" method="post">
                                             <tr>
                                                 <th><%= i+1 %></th>
-                                                <td><%= appointmentList.get(i).getAppointmentID()%></td>
-                                                <td><%= appointmentList.get(i).getAppointmentDate()%></td>
-                                                <td><%= appointmentList.get(i).getAppointmentTime()%></td>
-                                                <td><%= appointmentList.get(i).getAppointmentStatus()%></td>
+                                                <td><%= rs.getString("DoctorID")%></td>
+                                                <td><%= rs.getString("FullName")%></td>
+                                                <td><%= rs.getString("DoctorEmail")%></td>
+                                                <td><%= rs.getString("PhoneNumber")%></td>
                                             
-                                                <td><%
-                                                    if(appointmentList.get(i).getAppointmentStatus().equals("PENDING")){
-                                                        out.append("<Button type='submit' name='viewAppointment' value='"+ appointmentList.get(i).getAppointmentID() +"' class='btn btn-info btn-icon-split'><span class='text'>View</span></Button>");
-                                                    }
+                                                <td>
+                                                    <%
+                                                        out.append("<Button type='submit' name='viewDoctor' value='"+ rs.getString("DoctorID") +"' class='btn btn-info btn-icon-split'><span class='text'>View</span></Button>");
                                                     %>
                                                 </td>
                                             </tr>
                                         </form>
-                      <% } %>
-                   
+                                        <% } %>
                                     </tbody>
                                 </table>
                             </div>

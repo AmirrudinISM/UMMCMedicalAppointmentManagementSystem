@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Admin Dashboard</title>
+    <title>Register Doctor</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -26,9 +26,7 @@
 </head>
 
 <body id="page-top">
-    <%@page import="com.unikl.umams.entities.Appointment" %>
-    <%@page import="java.util.ArrayList" %>
-    <jsp:useBean id="db" scope="page" class="com.unikl.umams.web.DBController" />
+    
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -48,30 +46,23 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="admin_dashboard.jsp">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Manage Appointments</span></a>
             </li>
 
-
-            
-
-            
-
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-
             <!-- Nav Item - Tables -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="view_doctors.jsp">
                     <i class="fas fa-fw fa-table"></i>
-                    <span>Manage Doctors</span></a>
+                    <span>Manage Doctors</span>
+                </a>
             </li>
-
             
-
         </ul>
         <!-- End of Sidebar -->
 
@@ -107,68 +98,48 @@
 
                 </nav>
                 <!-- End of Topbar -->
-
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Appointments</h1>
-                    <p class="mb-4">View all created appointments and decide whether to confirm or cancel an appointment.</p>
-
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Appointment ID</th>
-                                            <th>Date</th>
-                                            <th>Time</th>
-                                            <th>Status</th>
-                                            <th>View</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Appointment ID</th>
-                                            <th>Date</th>
-                                            <th>Time</th>
-                                            <th>Status</th>
-                                            <th>View</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        <% ArrayList<Appointment> appointmentList = db.getAllAppointments(); %>
-                                        <% for(int i = 0; i < appointmentList.size(); i++){ %>
-                                        <form action="AdminServlet" method="post">
-                                            <tr>
-                                                <th><%= i+1 %></th>
-                                                <td><%= appointmentList.get(i).getAppointmentID()%></td>
-                                                <td><%= appointmentList.get(i).getAppointmentDate()%></td>
-                                                <td><%= appointmentList.get(i).getAppointmentTime()%></td>
-                                                <td><%= appointmentList.get(i).getAppointmentStatus()%></td>
-                                            
-                                                <td><%
-                                                    if(appointmentList.get(i).getAppointmentStatus().equals("PENDING")){
-                                                        out.append("<Button type='submit' name='viewAppointment' value='"+ appointmentList.get(i).getAppointmentID() +"' class='btn btn-info btn-icon-split'><span class='text'>View</span></Button>");
-                                                    }
-                                                    %>
-                                                </td>
-                                            </tr>
-                                        </form>
-                      <% } %>
-                   
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold ">Enter Doctor Information:</h6>
                     </div>
-
+                    <div class="card-body">
+                        <form class="user" action="AdminServlet" method="POST">
+                            <div class="form-group">
+                                <input type="text" class="form-control form-control-user" id="exampleInputEmail" name="doctorName"
+                                    placeholder="Full Name">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control form-control-user" id="exampleInputEmail" name="educationalBackground"
+                                    placeholder="Education Background">
+                            </div>                          
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <input type="text" class="form-control form-control-user" name="phoneNumber"
+                                        id="exampleInputPassword" placeholder="Phone Number">
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control form-control-user" name="location"
+                                        id="exampleRepeatPassword" placeholder="Location">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <input type="email" class="form-control form-control-user" name="doctorEmail"
+                                        id="exampleInputPassword" placeholder="Work Email">
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="password" class="form-control form-control-user" name="doctorPassword"
+                                        id="exampleRepeatPassword" placeholder="Password">
+                                </div>
+                            </div>
+                            <Button name="submit" value="registerDoctor" class="btn btn-primary btn-lg mr-2">
+                                Register
+                            </Button>
+                            <a href="view_doctors.jsp">Cancel</a>
+                        </form>
+                    </div>
                 </div>
+                
                 <!-- /.container-fluid -->
 
             </div>

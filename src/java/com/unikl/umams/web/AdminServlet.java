@@ -6,6 +6,7 @@
 package com.unikl.umams.web;
 
 import com.unikl.umams.entities.Appointment;
+import com.unikl.umams.utilities.IDGenerator;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.System.out;
@@ -62,6 +63,29 @@ public class AdminServlet extends HttpServlet {
                         dispatcher.forward(request, response);
                     }
                     break;
+                
+                case "adminLogout":
+                    HttpSession session = request.getSession();
+                    session.invalidate(); 
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("index.html"); // using RequestDispatcher method forward to login page.
+                    requestDispatcher.forward(request, response);
+                    break;
+                
+                case "registerDoctor":
+                    
+                    String name = request.getParameter("doctorName");
+                    String eduBackground = request.getParameter("educationalBackground");
+                    String phoneNumber= request.getParameter("phoneNumber");
+                    String location = request.getParameter("location");
+                    String email = request.getParameter("doctorEmail");
+                    String password = request.getParameter("doctorPassword");
+                    
+                    db.registerDoctor(name, eduBackground, phoneNumber, location, email, password);
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("view_doctors.jsp"); // using RequestDispatcher method forward to login page.
+                    dispatcher.forward(request, response);
+                    break;
+                    
+                    
                 default:
                     out.println("Error");
             }
