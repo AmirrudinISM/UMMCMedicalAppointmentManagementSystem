@@ -42,7 +42,7 @@ public class AdminServlet extends HttpServlet {
         DBController db = new DBController();
         String submitType = request.getParameter("submit");
         String appointmentID = request.getParameter("viewAppointment");
-        HttpSession session;
+        HttpSession session = null;
         RequestDispatcher dispatcher;
         if(submitType != null){
             switch(submitType){
@@ -83,33 +83,36 @@ public class AdminServlet extends HttpServlet {
                     String password = request.getParameter("doctorPassword");
                     
                     db.registerDoctor(name, eduBackground, phoneNumber, location, email, password);
-                    dispatcher = request.getRequestDispatcher("view_doctors.jsp"); // using RequestDispatcher method forward to login page.
+                    dispatcher = request.getRequestDispatcher("view_doctors.jsp");
                     dispatcher.forward(request, response);
                     break;
                 
-                case "doctorLogin":
-                    String doctorEmail = request.getParameter("email");
-                    String doctorPassword = request.getParameter("password");
-                    
-                    if(db.verifiedDoctor(doctorEmail, doctorPassword)){
-                        session = request.getSession();
-                        session.setAttribute("email", doctorEmail);
-                        session.setAttribute("loggedIn", true);
-
-                        dispatcher = request.getRequestDispatcher("doctor_dashboard.jsp");
-                        dispatcher.forward(request, response);
-                    }else{
-                        request.setAttribute("error", "Invalid credentials");
-                        dispatcher = request.getRequestDispatcher("doctor_login.jsp");
+                
+                case "confirm":
+                    if(request.getParameter("selectedDoctor").equals("")){
+                        request.setAttribute("error", "Please select a doctor to assign to!");
+                        
+                        
+                        dispatcher = request.getRequestDispatcher("admin_dashboard.jsp");
                         dispatcher.forward(request, response);
                     }
-                
-                case "doctorLogout":
-                    session = request.getSession();
-                    session.invalidate(); 
-                    dispatcher = request.getRequestDispatcher("doctor_login.jsp"); // using RequestDispatcher method forward to login page.
-                    dispatcher.forward(request, response);
+                    else{
+                        appointmentID = request.getParameter("appointmentID");
+                        String doctorID = request.getParameter("selectedDoctor");
+
+                        db.confirmAppointment(appointmentID, doctorID);
+                        dispatcher = request.getRequestDispatcher("admin_dashboard.jsp");
+                        dispatcher.forward(request, response);
+                    }
+                    
                     break;
+                
+                case "cancel":
+                    db.cancelAppointment(request.getParameter("appointmentID"));
+                    dispatcher = request.getRequestDispatcher("admin_dashboard.jsp");
+                    dispatcher.forward(request, response);
+                    
+                    
                     
                 default:
                     out.println("Error");
@@ -117,8 +120,8 @@ public class AdminServlet extends HttpServlet {
         }
         
         if(appointmentID != null){
-            request.setAttribute("appointmentID", appointmentID);
             
+            request.setAttribute("appointmentID", appointmentID);
             Appointment appointment = db.viewAppointment(appointmentID);
             request.setAttribute("appointmentDate", appointment.getAppointmentDate());
             request.setAttribute("appointmentTime", appointment.getAppointmentTime());

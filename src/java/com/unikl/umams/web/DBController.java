@@ -220,6 +220,34 @@ public class DBController {
             }
         return tempArray;
     }
+    
+    public ArrayList<Appointment> getAssignedAppointments(String doctorID) throws SQLException{
+        ArrayList<Appointment> tempArray = new ArrayList<>();
+        pstmt = conn.prepareStatement("SELECT AppointmentID, AppointmentDate, AppointmentTime, AppointmentStatus FROM appointments WHERE DoctorID = ? ORDER BY AppointmentStatus DESC ");
+        pstmt.setString(1, doctorID);
+        ResultSet rs =  pstmt.executeQuery();
+            while (rs.next()) {
+                Appointment temp = new Appointment();
+                temp.setAppointmentID(rs.getString("AppointmentID"));
+                temp.setAppointmentDate(rs.getString("AppointmentDate"));
+                temp.setAppointmentTime(rs.getString("AppointmentTime"));
+                temp.setAppointmentStatus(rs.getString("AppointmentStatus"));
+           
+                tempArray.add(temp);
+            }
+        return tempArray;
+    }
+    
+    public String getDoctorID(String doctorEmail) throws SQLException{
+        String doctorID = "";
+        pstmt = conn.prepareStatement("SELECT DoctorID FROM doctors WHERE DoctorEmail = ? ");
+        pstmt.setString(1, doctorEmail);
+        
+        ResultSet rs =  pstmt.executeQuery();
+        rs.next();
+        doctorID = rs.getString("DoctorID");
+        return doctorID;
+    }
 
     public Appointment viewAppointment(String appointmentID) throws SQLException {
         Appointment appointment = new Appointment();
@@ -282,6 +310,13 @@ public class DBController {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    void confirmAppointment(String appointmentID, String doctorID) throws SQLException {
+        pstmt = conn.prepareStatement("UPDATE appointments SET AppointmentStatus = 'CONFIRMED', DoctorID = ? WHERE AppointmentID = ?");
+        pstmt.setString(1, doctorID);
+        pstmt.setString(2, appointmentID);
+        pstmt.execute();
     }
     
 }

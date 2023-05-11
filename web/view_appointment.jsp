@@ -1,3 +1,4 @@
+<%@page import="java.sql.ResultSet"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,7 +27,7 @@
 </head>
 
 <body id="page-top">
-    
+    <jsp:useBean id="db" scope="page" class="com.unikl.umams.web.DBController" />
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -124,29 +125,33 @@
                                 <div class="col-md-3">Additional Description: </div><div class="col-md-6">${additionalDescription}</div>
                             </div>
                             <hr>
+                            
                             <form action="AdminServlet" method="post" >
                                 <div class="row">
                                     <div class="col-md-3">Doctor:</div>
                                     <div class="col-md-6">
-                                        <select id="inputState" name="selectedCourse" class="form-control">
+                                        
+                                        <select id="inputState" name="selectedDoctor" class="form-control">
                                             <option value="">-- Select Doctor to assign to --</option>
+                                            <% ResultSet rs = db.getDoctors(); %>
+                                            <% while (rs.next()){ %>
+                                                <option value="<%= rs.getString("DoctorID") %>"><%= rs.getString("FullName") %></option>
+                                            <% } %>
                                         </select>
                                     </div>
                                 </div>
                                 <br>
+                                <input type="hidden" id="custId" name="appointmentID" value=${appointmentID}>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <button type="submit" class="btn btn-primary mr-1" name="submit" value="addSubject">Confirm Appointment</button>
-                                        <button type="submit" class="btn btn-light mr-1" name="submit" value="addSubject">Cancel Appointment</button>
+                                        <button type="submit" class="btn btn-primary mr-1" name="submit" value="confirm">Confirm Appointment</button>
+                                        <button type="submit" class="btn btn-light mr-1" name="submit" value="cancel">Cancel Appointment</button>
                                     </div>
-                                        
                                 </div>
                                 <hr>
                                 <div class="row">
-                                        
-                                         <div class="col-md-3"><a class="mr-1" href="admin_dashboard.jsp">Return to homepage</a></div>
+                                    <div class="col-md-3"><a class="mr-1" href="admin_dashboard.jsp">Return to homepage</a></div>
                                 </div>
-                                
                             </form>
                         </div>
                         

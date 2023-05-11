@@ -26,7 +26,9 @@
 </head>
 
 <body id="page-top">
-    
+    <%@page import="com.unikl.umams.entities.Appointment" %>
+    <%@page import="java.util.ArrayList" %>
+    <jsp:useBean id="db" scope="page" class="com.unikl.umams.web.DBController" />
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -91,7 +93,60 @@
 
                 </nav>
                 <!-- End of Topbar -->
+                 <div class="container-fluid">
 
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">Appointments</h1>
+                    <p class="mb-4">View all created appointments and decide whether to confirm or cancel an appointment.</p>
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Appointment ID</th>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                            <th>Status</th>
+                                            <th>View</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Appointment ID</th>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                            <th>Status</th>
+                                            <th>View</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <% String doctorID = session.getAttribute("doctorID").toString(); %>
+                                        <% ArrayList<Appointment> appointmentList = db.getAssignedAppointments(doctorID); %>
+                                        <% for(int i = 0; i < appointmentList.size(); i++){ %>
+                                            <form action="DoctorServlet" method="post">
+                                                <tr>
+                                                    <th><%= i+1 %></th>
+                                                    <td><%= appointmentList.get(i).getAppointmentID()%></td>
+                                                    <td><%= appointmentList.get(i).getAppointmentDate()%></td>
+                                                    <td><%= appointmentList.get(i).getAppointmentTime()%></td>
+                                                    <td><%= appointmentList.get(i).getAppointmentStatus()%></td>
+                                                    <td> <%out.append("<Button type='submit' name='viewAppointment' value='"+ appointmentList.get(i).getAppointmentID() +"' class='btn btn-info btn-icon-split'><span class='text'>View</span></Button>");%></td>
+                                                </tr>
+                                            </form>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
                 
                 <!-- /.container-fluid -->
 
@@ -132,7 +187,7 @@
                 </div>
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
-                    <form action="AdminServlet" method="POST">
+                    <form action="DoctorServlet" method="POST">
                         <button class="btn btn-primary" type="submit" name="submit" value="doctorLogout">Logout</button>
                     </form>
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>

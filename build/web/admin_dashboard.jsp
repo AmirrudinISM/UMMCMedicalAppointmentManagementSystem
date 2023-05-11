@@ -54,11 +54,6 @@
                     <span>Manage Appointments</span></a>
             </li>
 
-
-            
-
-            
-
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
@@ -117,7 +112,7 @@
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
-                        
+                        <p style="color:red">${error}</p>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -216,7 +211,8 @@
             </div>
         </div>
     </div>
-
+    
+    
     <!-- Bootstrap core JavaScript-->
     <script src="assets/vendor/jquery/jquery.min.js"></script>
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

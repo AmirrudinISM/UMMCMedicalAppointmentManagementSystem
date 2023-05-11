@@ -45,7 +45,7 @@
                                         <h1 class="h4 text-gray-900 mb-4">Doctor Login</h1>
                                     </div>
                                     <span style="color: red;">${error}</span>
-                                    <form class="user" action="AdminServlet" method="POST">
+                                    <form class="user" action="DoctorServlet" method="POST">
                                         <div class="form-group">
                                             <input type="email" name="email" class="form-control form-control-user"
                                                 id="exampleInputEmail" placeholder="Enter ID">
