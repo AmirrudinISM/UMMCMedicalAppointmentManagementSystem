@@ -318,5 +318,26 @@ public class DBController {
         pstmt.setString(2, appointmentID);
         pstmt.execute();
     }
+
+    void completeAppointment(String appointmentID, float weight, float bloodPressure, float temperature, float oxygenLevel, String diagnosis, String additionalNotes) throws SQLException {
+        pstmt = conn.prepareStatement("UPDATE appointments SET "
+                + "Weight = ?, "
+                + "BloodPressure = ?, "
+                + "Temperature = ?, "
+                + "OxygenLevel = ?, "
+                + "AdditionalNotes = ?, "
+                + "Diagnosis = ?, "
+                + "AppointmentStatus = 'COMPLETED' "
+                + "WHERE AppointmentID = ?");
+        
+        pstmt.setFloat(1, weight);
+        pstmt.setFloat(2, bloodPressure);
+        pstmt.setFloat(3, temperature);
+        pstmt.setFloat(4, oxygenLevel);
+        pstmt.setString(5, additionalNotes);
+        pstmt.setString(6, diagnosis);
+        pstmt.setString(7, appointmentID);
+        pstmt.execute();
+    }
     
 }

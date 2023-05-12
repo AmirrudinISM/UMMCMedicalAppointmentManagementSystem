@@ -5,6 +5,7 @@
  */
 package com.unikl.umams.web;
 
+import com.unikl.umams.entities.Appointment;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.System.out;
@@ -66,17 +67,41 @@ public class DoctorServlet extends HttpServlet {
                 case "doctorLogout":
                     session = request.getSession();
                     session.invalidate(); 
-                    dispatcher = request.getRequestDispatcher("doctor_login.jsp"); // using RequestDispatcher method forward to login page.
+                    dispatcher = request.getRequestDispatcher("doctor_login.jsp");
                     dispatcher.forward(request, response);
                     break;
                 
-                case "confirm":
-                    appointmentID = session.getAttribute("appointmentID").toString();
+                case "complete":
+                    appointmentID = request.getParameter("appointmentID");
+                    float weight = Float.valueOf(request.getParameter("weight"));
+                    float bloodPressure = Float.valueOf(request.getParameter("bloodPressure"));
+                    float temperature = Float.valueOf(request.getParameter("temperature"));
+                    float oxygenLevel = Float.valueOf(request.getParameter("oxygenLevel"));
+                    String diagnosis = request.getParameter("diagnosis");
+                    String additionalNotes = request.getParameter("additionalNotes");
+                    
+                    db.completeAppointment(appointmentID, weight, bloodPressure, temperature, oxygenLevel, diagnosis, additionalNotes);
+                    dispatcher = request.getRequestDispatcher("doctor_dashboard.jsp");
+                    dispatcher.forward(request, response);
+                    return;
+                    
                     
                     
                 default:
                     out.println("Error");
             }
+        }
+        
+        if(appointmentID != null){
+            request.setAttribute("appointmentID", appointmentID);
+            Appointment appointment = db.viewAppointment(appointmentID);
+            request.setAttribute("appointmentDate", appointment.getAppointmentDate());
+            request.setAttribute("appointmentTime", appointment.getAppointmentTime());
+            request.setAttribute("status", appointment.getAppointmentStatus());
+            request.setAttribute("symptoms", appointment.getSymptoms());
+            request.setAttribute("additionalDescription", appointment.getOtherDescription());
+            dispatcher = request.getRequestDispatcher("view_assigned_appointment.jsp");
+            dispatcher.forward(request, response);
         }
         
     }
