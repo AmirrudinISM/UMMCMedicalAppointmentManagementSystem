@@ -36,6 +36,17 @@ public class Patient {
     }
 
     public Patient() {
+        this.patientID = "";
+        this.NRIC = "";
+        this.email = "";
+        this.password = "";
+        this.firstName = "";
+        this.lastName = "";
+        this.ethnicity = "";
+        this.phoneNumber = "";
+        this.address = "";
+        this.height = 0;
+        this.bloodType = "";
     }
     
     

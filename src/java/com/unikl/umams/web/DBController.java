@@ -139,6 +139,7 @@ public class DBController {
         return (count > 0);
     }
 
+
     public Patient getPatient(String email) {
         Patient loggedInPatient = new Patient();
         try {
@@ -146,17 +147,16 @@ public class DBController {
             pstmt.setString(1, email);
             
             ResultSet rs =  pstmt.executeQuery();
+            System.out.println("Size is: " + rs.getFetchSize());
             rs.next();
-            
             loggedInPatient.setPatientID(rs.getString("PatientID"));
             loggedInPatient.setPassword(rs.getString("Password"));
             loggedInPatient.setEmail(rs.getString("Email"));
             loggedInPatient.setFirstName(rs.getString("FirstName"));
-            
+               
         } catch (SQLException e) {
             System.out.println("ERROR!!! " + e.getMessage());
         }
-       
         return loggedInPatient;
     }
     
@@ -337,6 +337,60 @@ public class DBController {
         pstmt.setString(5, additionalNotes);
         pstmt.setString(6, diagnosis);
         pstmt.setString(7, appointmentID);
+        pstmt.execute();
+    }
+
+    void updateMissedAppointments() throws SQLException {
+       pstmt = conn.prepareStatement("UPDATE appointments SET AppointmentStatus = 'MISSED' WHERE (AppointmentStatus = 'PENDING' OR AppointmentStatus = 'CONFIRMED') AND AppointmentDate > CURDATE()");
+       pstmt.execute();
+    }
+
+    Patient viewProfile(String patientID) throws SQLException{
+        Patient patient = new Patient();
+        pstmt = conn.prepareStatement("SELECT * FROM patients WHERE PatientID = ? ");
+        pstmt.setString(1, patientID);
+        ResultSet rs =  pstmt.executeQuery();
+        rs.next();
+        
+        patient.setPatientID(rs.getString("PatientID"));
+        patient.setNRIC(rs.getString("NRIC"));
+        patient.setEmail(rs.getString("Email"));
+        patient.setFirstName(rs.getString("FirstName"));
+        patient.setLastName(rs.getString("LastName"));
+        patient.setEthnicity(rs.getString("Ethnicity"));
+        patient.setPhoneNumber(rs.getString("PhoneNumber"));
+        patient.setAddress(rs.getString("Address"));
+        patient.setHeight(rs.getFloat("Height"));
+        patient.setBloodType(rs.getString("BloodType"));
+        
+        return patient;
+    }
+    
+    public boolean patientExist(String email){
+        int count = 0;
+        
+        try {
+            pstmt = conn.prepareStatement("SELECT COUNT(*) FROM patients WHERE Email = ?");
+            pstmt.setString(1, email);
+            
+            ResultSet rs =  pstmt.executeQuery();
+            rs.next();
+            count = rs.getInt(1);
+            
+            
+        } catch (SQLException e) {
+            System.out.println("ERROR!!! " + e.getMessage());
+        }
+        return (count > 0);
+        
+    }
+
+    void updateProfile(String patientID, String phoneNumber, String address, String height) throws SQLException {
+        pstmt = conn.prepareStatement("UPDATE patients SET PhoneNumber = ?, Address = ?, Height = ? WHERE PatientID = ?");
+        pstmt.setString(1, phoneNumber);
+        pstmt.setString(2, address);
+        pstmt.setFloat(3, Float.valueOf(height));
+        pstmt.setString(4, patientID);
         pstmt.execute();
     }
     

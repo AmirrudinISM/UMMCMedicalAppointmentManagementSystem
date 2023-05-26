@@ -44,6 +44,7 @@ public class DoctorServlet extends HttpServlet {
         if(submitType != null){
             switch(submitType){
                 case "doctorLogin":
+                    //db.updateMissedAppointments();
                     String doctorEmail = request.getParameter("email");
                     String doctorPassword = request.getParameter("password");
                     

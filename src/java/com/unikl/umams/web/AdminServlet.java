@@ -47,6 +47,7 @@ public class AdminServlet extends HttpServlet {
         if(submitType != null){
             switch(submitType){
                 case "adminLogin":
+                    //db.updateMissedAppointments();
                     String adminName = request.getParameter("email");
                     String adminPassword = request.getParameter("password");
 

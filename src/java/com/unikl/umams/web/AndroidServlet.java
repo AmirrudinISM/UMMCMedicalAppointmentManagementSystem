@@ -7,6 +7,7 @@ package com.unikl.umams.web;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.mysql.cj.protocol.Resultset;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -21,6 +22,7 @@ import java.util.Enumeration;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.sql.ResultSet;
 
 /**
  *
@@ -188,6 +190,36 @@ public class AndroidServlet extends HttpServlet {
             }
             
         }
+        
+        if(request.getParameter("action").equals("viewProfile")){
+            String patientID = request.getParameter("patientID");
+            try {
+                Patient rs = db.viewProfile(patientID);
+                Gson gson = new Gson();
+                String patientInfo = gson.toJson(rs);
+                System.out.println(patientInfo);
+                response.setContentType("text/plain");
+                PrintWriter out = response.getWriter();
+                out.print(patientInfo);
+                out.flush();
+            } catch (SQLException ex) {
+                Logger.getLogger(AndroidServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        if(request.getParameter("action").equals("updateProfile")){
+            String patientID = request.getParameter("patientID");
+            String phoneNumber = request.getParameter("phoneNumber");
+            String address = request.getParameter("address");
+            String  height = request.getParameter("height");
+            
+            try {
+                db.updateProfile(patientID, phoneNumber, address, height);
+            } catch (SQLException ex) {
+                Logger.getLogger(AndroidServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
         
         
     }

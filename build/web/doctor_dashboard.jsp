@@ -49,7 +49,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="admin_dashboard.jsp">
+                <a class="nav-link" href="doctor_dashboard.jsp">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Manage Appointments</span></a>
             </li>

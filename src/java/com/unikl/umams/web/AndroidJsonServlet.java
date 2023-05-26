@@ -7,6 +7,7 @@ package com.unikl.umams.web;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.unikl.umams.entities.Appointment;
@@ -89,10 +90,16 @@ public class AndroidJsonServlet extends HttpServlet {
         System.out.println("Action from JSON: " + action);
         
         if(action.equals("login")){
+            Patient loggedIn = new Patient();
             String email = jsonObject.get("email").getAsString();
-            Patient loggedIn = db.getPatient(email);
+            String password = jsonObject.get("password").getAsString();
+            
+            if(db.patientExist(email)){
+                loggedIn = db.getPatient(email);  
+            }
             Gson gson = new Gson();
             String patientInfo = gson.toJson(loggedIn);
+            System.out.println(patientInfo);
             response.setContentType("application/json");
             PrintWriter out = response.getWriter();
             out.print(patientInfo);
