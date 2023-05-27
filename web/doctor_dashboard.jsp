@@ -136,7 +136,14 @@
                                                     <td><%= appointmentList.get(i).getAppointmentDate()%></td>
                                                     <td><%= appointmentList.get(i).getAppointmentTime()%></td>
                                                     <td><%= appointmentList.get(i).getAppointmentStatus()%></td>
-                                                    <td> <%out.append("<Button type='submit' name='viewAppointment' value='"+ appointmentList.get(i).getAppointmentID() +"' class='btn btn-info btn-icon-split'><span class='text'>View</span></Button>");%></td>
+                                                    <td><%
+                                                        if(appointmentList.get(i).getAppointmentStatus().equals("CONFIRMED")){
+                                                            out.append("<Button type='submit' name='consultAppointment' value='"+ appointmentList.get(i).getAppointmentID() +"' class='btn btn-info btn-icon-split'><span class='text'>Consult</span></Button>");
+                                                        }else if (appointmentList.get(i).getAppointmentStatus().equals("COMPLETED")){
+                                                            out.append("<Button type='submit' name='viewAppointment' value='"+ appointmentList.get(i).getAppointmentID() +"' class='btn btn-light btn-icon-split'><span class='text'>View</span></Button>");
+                                                        }
+                                                        %>
+                                                    </td>
                                                 </tr>
                                             </form>
                                         <% } %>

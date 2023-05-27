@@ -37,8 +37,11 @@ public class DoctorServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         DBController db = new DBController();
+        
         String submitType = request.getParameter("submit");
-        String appointmentID = request.getParameter("viewAppointment");
+        String viewAppointmentID = request.getParameter("viewAppointment");
+        String consultAppointmentID = request.getParameter("consultAppointment");
+        
         HttpSession session = null;
         RequestDispatcher dispatcher;
         if(submitType != null){
@@ -73,7 +76,7 @@ public class DoctorServlet extends HttpServlet {
                     break;
                 
                 case "complete":
-                    appointmentID = request.getParameter("appointmentID");
+                    consultAppointmentID = request.getParameter("appointmentID");
                     float weight = Float.valueOf(request.getParameter("weight"));
                     float bloodPressure = Float.valueOf(request.getParameter("bloodPressure"));
                     float temperature = Float.valueOf(request.getParameter("temperature"));
@@ -81,10 +84,15 @@ public class DoctorServlet extends HttpServlet {
                     String diagnosis = request.getParameter("diagnosis");
                     String additionalNotes = request.getParameter("additionalNotes");
                     
-                    db.completeAppointment(appointmentID, weight, bloodPressure, temperature, oxygenLevel, diagnosis, additionalNotes);
+                    db.completeAppointment(consultAppointmentID, weight, bloodPressure, temperature, oxygenLevel, diagnosis, additionalNotes);
                     dispatcher = request.getRequestDispatcher("doctor_dashboard.jsp");
                     dispatcher.forward(request, response);
                     return;
+                    
+                case "cancel":
+                    db.cancelAppointment(request.getParameter("appointmentID"));
+                    dispatcher = request.getRequestDispatcher("doctor_dashboard.jsp");
+                    dispatcher.forward(request, response);
                     
                     
                     
@@ -93,14 +101,32 @@ public class DoctorServlet extends HttpServlet {
             }
         }
         
-        if(appointmentID != null){
-            request.setAttribute("appointmentID", appointmentID);
-            Appointment appointment = db.viewAppointment(appointmentID);
+        if(consultAppointmentID != null){
+            request.setAttribute("appointmentID", consultAppointmentID);
+            Appointment appointment = db.viewAppointment(consultAppointmentID);
             request.setAttribute("appointmentDate", appointment.getAppointmentDate());
             request.setAttribute("appointmentTime", appointment.getAppointmentTime());
             request.setAttribute("status", appointment.getAppointmentStatus());
             request.setAttribute("symptoms", appointment.getSymptoms());
             request.setAttribute("additionalDescription", appointment.getOtherDescription());
+            dispatcher = request.getRequestDispatcher("consult_appointment.jsp");
+            dispatcher.forward(request, response);
+        }
+        
+        if(viewAppointmentID != null){
+            request.setAttribute("appointmentID", viewAppointmentID);
+            Appointment appointment = db.viewAppointment(viewAppointmentID);
+            request.setAttribute("appointmentDate", appointment.getAppointmentDate());
+            request.setAttribute("appointmentTime", appointment.getAppointmentTime());
+            request.setAttribute("status", appointment.getAppointmentStatus());
+            request.setAttribute("symptoms", appointment.getSymptoms());
+            request.setAttribute("additionalDescription", appointment.getOtherDescription());
+            request.setAttribute("weight", appointment.getWeight());
+            request.setAttribute("bloodPressure", appointment.getBloodPressure());
+            request.setAttribute("temperature", appointment.getTemperature());
+            request.setAttribute("oxygenLevel", appointment.getOxygenLevel());
+            request.setAttribute("diagnosis", appointment.getDiagnosis());
+            request.setAttribute("additionalNotes", appointment.getAdditionalNotes());
             dispatcher = request.getRequestDispatcher("view_assigned_appointment.jsp");
             dispatcher.forward(request, response);
         }

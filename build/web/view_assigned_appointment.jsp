@@ -118,34 +118,24 @@
                             <form action="DoctorServlet" method="post" >
                                 <div class="row">
                                     <div class="col-md-3">Weight (KG): </div>
-                                    <div class="col-md-2"><input type="number" step="0.1" min="0.0" name="weight" class="form-control" ></div>
+                                    <div class="col-md-2">${weight}</div>
                                     <div class="col-md-2">Blood Pressure (mmHg): </div>
-                                    <div class="col-md-2"><input type="number" step="0.1" min="0.0" name="bloodPressure" class="form-control" ></div>
+                                    <div class="col-md-2">${bloodPressure}</div>
                                 </div>
                                 <br>
                                 <div class="row">
                                     <div class="col-md-3">Temperature (°C): </div>
-                                    <div class="col-md-2"><input type="number" step="0.1" min="0.0" name="temperature" class="form-control" ></div>
+                                    <div class="col-md-2">${temperature}</div>
                                     <div class="col-md-2">Oxygen Level (%):</div>
-                                    <div class="col-md-2"><input type="number" step="0.1" min="0.0" name="oxygenLevel" class="form-control" ></div>
+                                    <div class="col-md-2">${oxygenLevel}</div>
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <div class="col-md-3">Diagnosis: </div><div class="col-md-6"><input name="diagnosis" type="text" class="form-control" ></div>
+                                    <div class="col-md-3">Diagnosis: </div><div class="col-md-6">${diagnosis}</div>
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <div class="col-md-3">Instruction: </div><div class="col-md-6"><textarea type="text" name="additionalNotes" class="form-control" placeholder="Write down instruction or prescription to patient here"></textarea></div>
-                                </div>
-
-
-                                <br>
-                                <input type="hidden" id="custId" name="appointmentID" value=${appointmentID}>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <button type="submit" class="btn btn-primary mr-1" name="submit" value="complete">Complete Appointment</button>
-                                        <button type="submit" class="btn btn-light mr-1" name="submit" value="cancel">Cancel Appointment</button>
-                                    </div>
+                                    <div class="col-md-3">Additional Notes: </div><div class="col-md-6">${additionalNotes}</div>
                                 </div>
                                 <hr>
                                 <div class="row">
