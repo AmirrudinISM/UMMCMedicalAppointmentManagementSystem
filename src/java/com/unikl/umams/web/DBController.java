@@ -41,6 +41,7 @@ public class DBController {
             // Connect to the sample database
             conn = DriverManager.getConnection(connectionString, DBCredentials.getDbUserName(), DBCredentials.getDbPassword());
             System.out.println("Database " + connectionString + " connected");
+            updateMissedAppointments();
         }
         catch (ClassNotFoundException | SQLException ex) {
             System.out.println(ex);
@@ -341,8 +342,9 @@ public class DBController {
     }
 
     void updateMissedAppointments() throws SQLException {
-       pstmt = conn.prepareStatement("UPDATE appointments SET AppointmentStatus = 'MISSED' WHERE (AppointmentStatus = 'PENDING' OR AppointmentStatus = 'CONFIRMED') AND AppointmentDate > CURDATE()");
+       pstmt = conn.prepareStatement("UPDATE appointments SET AppointmentStatus = 'MISSED' WHERE (AppointmentStatus = 'PENDING' OR AppointmentStatus = 'CONFIRMED') AND AppointmentDate < CURDATE()");
        pstmt.execute();
+       System.out.println("Missed appointments updated");
     }
 
     Patient viewProfile(String patientID) throws SQLException{
