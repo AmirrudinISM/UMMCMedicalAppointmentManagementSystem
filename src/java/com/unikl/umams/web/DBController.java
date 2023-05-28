@@ -5,6 +5,8 @@
  */
 package com.unikl.umams.web;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -274,6 +276,83 @@ public class DBController {
         appointment.setDoctorID(rs.getString("DoctorID"));
         
         return appointment;
+    }
+    
+    public JsonObject viewAppointmentJSON(String appointmentID) throws SQLException{
+        JsonObject response = new JsonObject();
+        
+            
+        pstmt = conn.prepareStatement("SELECT \n" +
+            "appointments.AppointmentID, \n" +
+            "appointments.CreatedTime, \n" +
+            "appointments.Symptoms, \n" +
+            "appointments.OtherDescription, \n" +
+            "appointments.AppointmentDate, \n" +
+            "appointments.AppointmentTime, \n" +
+            "appointments.AppointmentStatus, \n" +
+            "appointments.Weight, \n" +
+            "appointments.BloodPressure, \n" +
+            "appointments.Temperature, \n" +
+            "appointments.OxygenLevel, \n" +
+            "appointments.AdditionalNotes,\n" +
+            "appointments.Diagnosis,\n" +
+            "appointments.PatientID,\n" +
+            "appointments.DoctorID,\n" +
+            "doctors.FullName\n" +
+            "FROM appointments\n" +
+            "INNER JOIN doctors\n" +
+            "ON appointments.DoctorID = doctors.DoctorID\n" +
+            "WHERE AppointmentID = ? ");
+             
+        pstmt.setString(1, appointmentID);
+        
+        ResultSet rs =  pstmt.executeQuery();
+        if(rs.isBeforeFirst()){
+            rs.next();
+        
+            response.addProperty("appointmentID", rs.getString("AppointmentID"));
+            response.addProperty("createdTime", rs.getString("CreatedTime"));
+            response.addProperty("symptoms", rs.getString("Symptoms"));
+            response.addProperty("otherDescription", rs.getString("OtherDescription"));
+            response.addProperty("appointmentDate", rs.getString("AppointmentDate"));
+            response.addProperty("appointmentTime", rs.getString("AppointmentTime"));
+            response.addProperty("appointmentStatus", rs.getString("AppointmentStatus"));
+            response.addProperty("weight", rs.getString("Weight"));
+            response.addProperty("bloodPressure", rs.getString("BloodPressure"));
+            response.addProperty("temperature", rs.getString("Temperature"));
+            response.addProperty("oxygenLevel", rs.getString("OxygenLevel"));
+            response.addProperty("additionalNotes", rs.getString("AdditionalNotes"));
+            response.addProperty("diagnosis", rs.getString("Diagnosis"));
+            response.addProperty("patientID", rs.getString("PatientID"));
+            response.addProperty("doctorID", rs.getString("DoctorID"));
+            response.addProperty("fullName", rs.getString("FullName"));
+        }
+        else{
+            pstmt = conn.prepareStatement("SELECT * FROM appointments WHERE AppointmentID = ? ");
+            pstmt.setString(1, appointmentID);
+            rs =  pstmt.executeQuery();
+            
+            rs.next();
+            response.addProperty("appointmentID", rs.getString("AppointmentID"));
+            response.addProperty("createdTime", rs.getString("CreatedTime"));
+            response.addProperty("symptoms", rs.getString("Symptoms"));
+            response.addProperty("otherDescription", rs.getString("OtherDescription"));
+            response.addProperty("appointmentDate", rs.getString("AppointmentDate"));
+            response.addProperty("appointmentTime", rs.getString("AppointmentTime"));
+            response.addProperty("appointmentStatus", rs.getString("AppointmentStatus"));
+            response.addProperty("weight", rs.getString("Weight"));
+            response.addProperty("bloodPressure", rs.getString("BloodPressure"));
+            response.addProperty("temperature", rs.getString("Temperature"));
+            response.addProperty("oxygenLevel", rs.getString("OxygenLevel"));
+            response.addProperty("additionalNotes", rs.getString("AdditionalNotes"));
+            response.addProperty("diagnosis", rs.getString("Diagnosis"));
+            response.addProperty("patientID", rs.getString("PatientID"));
+            response.addProperty("doctorID", rs.getString("DoctorID"));
+            response.addProperty("fullName", "");
+        }
+        
+        
+        return response;
     }
 
     public void cancelAppointment(String appointmentID) throws SQLException {

@@ -7,6 +7,7 @@ package com.unikl.umams.web;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.mysql.cj.protocol.Resultset;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -163,9 +164,9 @@ public class AndroidServlet extends HttpServlet {
         
         if(request.getParameter("action").equals("viewAppointment")){
             String appointmentID = request.getParameter("appointmentID");
-            Appointment appointment;
+            JsonObject appointment = new JsonObject();
             try {
-                appointment = db.viewAppointment(appointmentID);
+                appointment = db.viewAppointmentJSON(appointmentID);
                 Gson gson = new Gson();
                 String appointmentInfo = gson.toJson(appointment);
                 System.out.println(appointmentInfo);
