@@ -296,7 +296,8 @@ public class DBController {
             "appointments.AppointmentTime, \n" +
             "appointments.AppointmentStatus, \n" +
             "appointments.Weight, \n" +
-            "appointments.BloodPressure, \n" +
+            "appointments.systolicBP, \n" +
+            "appointments.diastolicBP, \n" +
             "appointments.Temperature, \n" +
             "appointments.OxygenLevel, \n" +
             "appointments.AdditionalNotes,\n" +
@@ -324,7 +325,8 @@ public class DBController {
             response.addProperty("appointmentTime", rs.getString("AppointmentTime"));
             response.addProperty("appointmentStatus", rs.getString("AppointmentStatus"));
             response.addProperty("weight", rs.getString("Weight"));
-            response.addProperty("bloodPressure", rs.getString("BloodPressure"));
+            response.addProperty("systolicBP", rs.getString("systolicBP"));
+            response.addProperty("diastolicBP", rs.getString("diastolicBP"));
             response.addProperty("temperature", rs.getString("Temperature"));
             response.addProperty("oxygenLevel", rs.getString("OxygenLevel"));
             response.addProperty("additionalNotes", rs.getString("AdditionalNotes"));
@@ -348,7 +350,8 @@ public class DBController {
             response.addProperty("appointmentTime", rs.getString("AppointmentTime"));
             response.addProperty("appointmentStatus", rs.getString("AppointmentStatus"));
             response.addProperty("weight", rs.getString("Weight"));
-            response.addProperty("bloodPressure", rs.getString("BloodPressure"));
+            response.addProperty("systolicBP", rs.getString("systolicBP"));
+            response.addProperty("diastolicBP", rs.getString("diastolicBP"));
             response.addProperty("temperature", rs.getString("Temperature"));
             response.addProperty("oxygenLevel", rs.getString("OxygenLevel"));
             response.addProperty("additionalNotes", rs.getString("AdditionalNotes"));
