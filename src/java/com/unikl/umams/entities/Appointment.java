@@ -9,7 +9,6 @@ public class Appointment {
     private String appointmentTime;
     private String appointmentStatus;
     private float weight;
-    private float bloodPressure;
     private float temperature;
     private float oxygenLevel;
     private String additionalNotes;
@@ -17,6 +16,8 @@ public class Appointment {
     private String patientID;
     private String doctorID;
     private String prescription;
+    private float systolicBP;
+    private float diastolicBP;
 
     public Appointment(
             String appointmentID,
@@ -27,14 +28,15 @@ public class Appointment {
             String appointmentTime,
             String appointmentStatus,
             float weight,
-            float bloodPressure,
             float temperature,
             float oxygenLevel,
             String additionalNotes,
             String diagnosis,
             String patientID,
             String doctorID,
-            String prescription) {
+            String prescription,
+            float systolicBP,
+            float diastolicBP) {
         this.appointmentID = appointmentID;
         this.symptoms = symptoms;
         this.otherDescription = otherDescription;
@@ -42,7 +44,6 @@ public class Appointment {
         this.appointmentTime = appointmentTime;
         this.appointmentStatus = appointmentStatus;
         this.weight = weight;
-        this.bloodPressure = bloodPressure;
         this.temperature = temperature;
         this.oxygenLevel = oxygenLevel;
         this.additionalNotes = additionalNotes;
@@ -50,6 +51,8 @@ public class Appointment {
         this.patientID = patientID;
         this.doctorID = doctorID;
         this.prescription = prescription;
+        this.systolicBP = systolicBP;
+        this.diastolicBP = diastolicBP;
     }
 
     public Appointment() {
@@ -110,14 +113,6 @@ public class Appointment {
 
     public void setWeight(float weight) {
         this.weight = weight;
-    }
-
-    public float getBloodPressure() {
-        return bloodPressure;
-    }
-
-    public void setBloodPressure(float bloodPressure) {
-        this.bloodPressure = bloodPressure;
     }
 
     public float getTemperature() {
@@ -182,6 +177,22 @@ public class Appointment {
 
     public void setPrescription(String prescription) {
         this.prescription = prescription;
+    }
+
+    public float getSystolicBP() {
+        return systolicBP;
+    }
+
+    public void setSystolicBP(float systolicBP) {
+        this.systolicBP = systolicBP;
+    }
+
+    public float getDiastolicBP() {
+        return diastolicBP;
+    }
+
+    public void setDiastolicBP(float diastolicBP) {
+        this.diastolicBP = diastolicBP;
     }
     
     
