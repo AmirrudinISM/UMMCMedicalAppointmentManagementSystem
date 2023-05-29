@@ -16,6 +16,7 @@ public class Appointment {
     private String diagnosis;
     private String patientID;
     private String doctorID;
+    private String prescription;
 
     public Appointment(
             String appointmentID,
@@ -32,7 +33,8 @@ public class Appointment {
             String additionalNotes,
             String diagnosis,
             String patientID,
-            String doctorID) {
+            String doctorID,
+            String prescription) {
         this.appointmentID = appointmentID;
         this.symptoms = symptoms;
         this.otherDescription = otherDescription;
@@ -47,6 +49,7 @@ public class Appointment {
         this.diagnosis = diagnosis;
         this.patientID = patientID;
         this.doctorID = doctorID;
+        this.prescription = prescription;
     }
 
     public Appointment() {
@@ -172,4 +175,14 @@ public class Appointment {
     public void setCreatedDateTime(String createdDateTime) {
         this.createdDateTime = createdDateTime;
     }
+
+    public String getPrescription() {
+        return prescription;
+    }
+
+    public void setPrescription(String prescription) {
+        this.prescription = prescription;
+    }
+    
+    
 }

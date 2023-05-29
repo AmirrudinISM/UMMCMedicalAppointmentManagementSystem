@@ -137,6 +137,10 @@
                                 <div class="row">
                                     <div class="col-md-3">Additional Notes: </div><div class="col-md-6">${additionalNotes}</div>
                                 </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-3">Prescription: </div><div class="col-md-6">${prescription}</div>
+                                </div>
                                 <hr>
                                 <div class="row">
                                     <div class="col-md-3"><a class="mr-1" href="doctor_dashboard.jsp">Return to homepage</a></div>
