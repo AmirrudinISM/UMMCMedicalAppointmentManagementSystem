@@ -275,6 +275,7 @@ public class DBController {
         appointment.setAdditionalNotes(rs.getString("AdditionalNotes"));
         appointment.setDiagnosis(rs.getString("Diagnosis"));
         appointment.setDoctorID(rs.getString("DoctorID"));
+        appointment.setPrescription(rs.getString("Prescription"));
         
         return appointment;
     }
@@ -400,7 +401,7 @@ public class DBController {
         pstmt.execute();
     }
 
-    void completeAppointment(String appointmentID, float weight, float bloodPressure, float temperature, float oxygenLevel, String diagnosis, String additionalNotes) throws SQLException {
+    void completeAppointment(String appointmentID, float weight, float bloodPressure, float temperature, float oxygenLevel, String diagnosis, String additionalNotes, String prescription) throws SQLException {
         pstmt = conn.prepareStatement("UPDATE appointments SET "
                 + "Weight = ?, "
                 + "BloodPressure = ?, "
@@ -408,7 +409,8 @@ public class DBController {
                 + "OxygenLevel = ?, "
                 + "AdditionalNotes = ?, "
                 + "Diagnosis = ?, "
-                + "AppointmentStatus = 'COMPLETED' "
+                + "AppointmentStatus = 'COMPLETED', "
+                + "Prescription = ?"
                 + "WHERE AppointmentID = ?");
         
         pstmt.setFloat(1, weight);
@@ -417,7 +419,8 @@ public class DBController {
         pstmt.setFloat(4, oxygenLevel);
         pstmt.setString(5, additionalNotes);
         pstmt.setString(6, diagnosis);
-        pstmt.setString(7, appointmentID);
+        pstmt.setString(7, prescription);
+        pstmt.setString(8, appointmentID);
         pstmt.execute();
     }
 

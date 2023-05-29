@@ -83,8 +83,9 @@ public class DoctorServlet extends HttpServlet {
                     float oxygenLevel = Float.valueOf(request.getParameter("oxygenLevel"));
                     String diagnosis = request.getParameter("diagnosis");
                     String additionalNotes = request.getParameter("additionalNotes");
+                    String prescription = request.getParameter("prescription");
                     
-                    db.completeAppointment(consultAppointmentID, weight, bloodPressure, temperature, oxygenLevel, diagnosis, additionalNotes);
+                    db.completeAppointment(consultAppointmentID, weight, bloodPressure, temperature, oxygenLevel, diagnosis, additionalNotes, prescription);
                     dispatcher = request.getRequestDispatcher("doctor_dashboard.jsp");
                     dispatcher.forward(request, response);
                     return;
@@ -127,6 +128,7 @@ public class DoctorServlet extends HttpServlet {
             request.setAttribute("oxygenLevel", appointment.getOxygenLevel());
             request.setAttribute("diagnosis", appointment.getDiagnosis());
             request.setAttribute("additionalNotes", appointment.getAdditionalNotes());
+            request.setAttribute("prescription", appointment.getPrescription());
             dispatcher = request.getRequestDispatcher("view_assigned_appointment.jsp");
             dispatcher.forward(request, response);
         }

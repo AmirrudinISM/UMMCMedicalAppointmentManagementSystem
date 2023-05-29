@@ -135,9 +135,12 @@
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <div class="col-md-3">Additional Notes: </div><div class="col-md-6"><textarea type="text" name="additionalNotes" class="form-control" placeholder=""></textarea></div>
+                                    <div class="col-md-3">Additional Notes: </div><div class="col-md-6"><textarea type="text" name="additionalNotes" class="form-control" placeholder="Write notes regarding the patient here"></textarea></div>
                                 </div>
-
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-3">Prescription: </div><div class="col-md-6"><textarea type="text" name="prescription" class="form-control" placeholder="Write patient prescription here"></textarea></div>
+                                </div>
 
                                 <br>
                                 <input type="hidden" id="custId" name="appointmentID" value=${appointmentID}>
