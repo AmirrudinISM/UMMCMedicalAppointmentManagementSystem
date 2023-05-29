@@ -105,30 +105,36 @@
                     <div class="card-body">
                         <form class="user" action="AdminServlet" method="POST">
                             <div class="form-group">
-                                <input type="text" class="form-control form-control-user" id="exampleInputEmail" name="doctorName"
+                                <input type="text" class="form-control " id="exampleInputEmail" name="doctorName"
                                     placeholder="Full Name">
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control form-control-user" id="exampleInputEmail" name="educationalBackground"
-                                    placeholder="Education Background">
+                                <select id="inputState" name="educationalBackground" class="form-control">
+                                    <option value="">-- Select qualification --</option>
+                                    <option value="Bachelor of Medicine - MBBS">Bachelor of Medicine - MBBS</option>
+                                    <option value="Bachelor of Surgery - MBBS">Bachelor of Surgery - MBBS</option>
+                                    <option value="Bachelor of Physiotherapy - BPT">Bachelor of Physiotherapy - BPT</option>
+                                    <option value="Master of Surgery - MS">Master of Surgery - MS</option>
+                                    <option value="Doctor of Medicine - MD">Doctor of Medicine</option>
+                                </select>
                             </div>                          
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input type="text" class="form-control form-control-user" name="phoneNumber"
+                                    <input type="text" class="form-control" name="phoneNumber"
                                         id="exampleInputPassword" placeholder="Phone Number">
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control form-control-user" name="location"
+                                    <input type="text" class="form-control " name="location"
                                         id="exampleRepeatPassword" placeholder="Location">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input type="email" class="form-control form-control-user" name="doctorEmail"
+                                    <input type="email" class="form-control" name="doctorEmail"
                                         id="exampleInputPassword" placeholder="Work Email">
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="password" class="form-control form-control-user" name="doctorPassword"
+                                    <input type="password" class="form-control " name="doctorPassword"
                                         id="exampleRepeatPassword" placeholder="Password">
                                 </div>
                             </div>
