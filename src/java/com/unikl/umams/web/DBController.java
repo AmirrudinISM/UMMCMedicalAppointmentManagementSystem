@@ -298,6 +298,7 @@ public class DBController {
             "appointments.OxygenLevel, \n" +
             "appointments.AdditionalNotes,\n" +
             "appointments.Diagnosis,\n" +
+            "appointments.Prescription,\n" +
             "appointments.PatientID,\n" +
             "appointments.DoctorID,\n" +
             "doctors.FullName\n" +
@@ -325,6 +326,7 @@ public class DBController {
             response.addProperty("oxygenLevel", rs.getString("OxygenLevel"));
             response.addProperty("additionalNotes", rs.getString("AdditionalNotes"));
             response.addProperty("diagnosis", rs.getString("Diagnosis"));
+            response.addProperty("prescription", rs.getString("Prescription"));
             response.addProperty("patientID", rs.getString("PatientID"));
             response.addProperty("doctorID", rs.getString("DoctorID"));
             response.addProperty("fullName", rs.getString("FullName"));

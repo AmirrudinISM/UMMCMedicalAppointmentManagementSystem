@@ -84,6 +84,9 @@ public class DoctorServlet extends HttpServlet {
                     String diagnosis = request.getParameter("diagnosis");
                     String additionalNotes = request.getParameter("additionalNotes");
                     String prescription = request.getParameter("prescription");
+                    if(prescription == null){
+                        prescription = "";
+                    }
                     
                     db.completeAppointment(consultAppointmentID, weight, bloodPressure, temperature, oxygenLevel, diagnosis, additionalNotes, prescription);
                     dispatcher = request.getRequestDispatcher("doctor_dashboard.jsp");
