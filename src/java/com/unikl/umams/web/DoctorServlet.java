@@ -78,17 +78,15 @@ public class DoctorServlet extends HttpServlet {
                 case "complete":
                     consultAppointmentID = request.getParameter("appointmentID");
                     float weight = Float.valueOf(request.getParameter("weight"));
-                    float bloodPressure = Float.valueOf(request.getParameter("bloodPressure"));
+                    float systolicBP = Float.valueOf(request.getParameter("systolicBP"));
+                    float diastolicBP = Float.valueOf(request.getParameter("diastolicBP"));
                     float temperature = Float.valueOf(request.getParameter("temperature"));
                     float oxygenLevel = Float.valueOf(request.getParameter("oxygenLevel"));
                     String diagnosis = request.getParameter("diagnosis");
                     String additionalNotes = request.getParameter("additionalNotes");
                     String prescription = request.getParameter("prescription");
-                    if(prescription == null){
-                        prescription = "";
-                    }
                     
-                    db.completeAppointment(consultAppointmentID, weight, bloodPressure, temperature, oxygenLevel, diagnosis, additionalNotes, prescription);
+                    db.completeAppointment(consultAppointmentID, weight, temperature, oxygenLevel, diagnosis, additionalNotes, prescription, systolicBP, diastolicBP);
                     dispatcher = request.getRequestDispatcher("doctor_dashboard.jsp");
                     dispatcher.forward(request, response);
                     return;
@@ -126,12 +124,13 @@ public class DoctorServlet extends HttpServlet {
             request.setAttribute("symptoms", appointment.getSymptoms());
             request.setAttribute("additionalDescription", appointment.getOtherDescription());
             request.setAttribute("weight", appointment.getWeight());
-            request.setAttribute("bloodPressure", appointment.getBloodPressure());
             request.setAttribute("temperature", appointment.getTemperature());
             request.setAttribute("oxygenLevel", appointment.getOxygenLevel());
             request.setAttribute("diagnosis", appointment.getDiagnosis());
             request.setAttribute("additionalNotes", appointment.getAdditionalNotes());
             request.setAttribute("prescription", appointment.getPrescription());
+            request.setAttribute("systolicBP", appointment.getSystolicBP());
+            request.setAttribute("diastolicBP", appointment.getDiastolicBP());
             dispatcher = request.getRequestDispatcher("view_assigned_appointment.jsp");
             dispatcher.forward(request, response);
         }

@@ -166,8 +166,8 @@ public class DBController {
     
     public void createAppointment(Appointment inAppointment){
         try {
-            pstmt = conn.prepareStatement("INSERT into appointments (AppointmentID, CreatedTime, Symptoms, OtherDescription, AppointmentDate, AppointmentTime, AppointmentStatus, Weight, BloodPressure, Temperature, OxygenLevel, AdditionalNotes, Diagnosis, PatientID, DoctorID)"
-                    + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            pstmt = conn.prepareStatement("INSERT into appointments (AppointmentID, CreatedTime, Symptoms, OtherDescription, AppointmentDate, AppointmentTime, AppointmentStatus, Weight, Temperature, OxygenLevel, AdditionalNotes, Diagnosis, PatientID, DoctorID, Prescription, SystolicBP, DiastolicBP)"
+                    + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             
             pstmt.setString(1, IDGenerator.generateAppointmentID(10));
             pstmt.setString(2, inAppointment.getCreatedDateTime());
@@ -176,14 +176,16 @@ public class DBController {
             pstmt.setString(5, inAppointment.getAppointmentDate());
             pstmt.setString(6, inAppointment.getAppointmentTime());
             pstmt.setString(7, inAppointment.getAppointmentStatus());
-            pstmt.setFloat(8, inAppointment.getWeight());
-            pstmt.setFloat(9, inAppointment.getBloodPressure());
-            pstmt.setFloat(10, inAppointment.getTemperature());
-            pstmt.setFloat(11, inAppointment.getOxygenLevel());
-            pstmt.setString(12, "");//additional notes
-            pstmt.setString(13, "");//diagnosis
-            pstmt.setString(14, inAppointment.getPatientID());
-            pstmt.setString(15, "");//doctorID
+            pstmt.setFloat(8, 0);//weight
+            pstmt.setFloat(9, 0);//temperature
+            pstmt.setFloat(10, 0);//oxygenlevel
+            pstmt.setString(11, "");//additional notes
+            pstmt.setString(12, "");//diagnosis
+            pstmt.setString(13, inAppointment.getPatientID());
+            pstmt.setString(14, "");//doctorID
+            pstmt.setString(15, "");//prescription
+            pstmt.setFloat(16, 0);//systolicBP
+            pstmt.setFloat(17, 0);//diastolicBP
             
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -269,13 +271,14 @@ public class DBController {
         appointment.setAppointmentTime(rs.getString("AppointmentTime"));
         appointment.setAppointmentStatus(rs.getString("AppointmentStatus"));
         appointment.setWeight(rs.getFloat("Weight"));
-        appointment.setBloodPressure(rs.getFloat("BloodPressure"));
         appointment.setTemperature(rs.getFloat("Temperature"));
         appointment.setOxygenLevel(rs.getFloat("OxygenLevel"));
         appointment.setAdditionalNotes(rs.getString("AdditionalNotes"));
         appointment.setDiagnosis(rs.getString("Diagnosis"));
         appointment.setDoctorID(rs.getString("DoctorID"));
         appointment.setPrescription(rs.getString("Prescription"));
+        appointment.setSystolicBP(rs.getFloat("SystolicBP"));
+        appointment.setDiastolicBP(rs.getFloat("DiastolicBP"));
         
         return appointment;
     }
@@ -403,26 +406,28 @@ public class DBController {
         pstmt.execute();
     }
 
-    void completeAppointment(String appointmentID, float weight, float bloodPressure, float temperature, float oxygenLevel, String diagnosis, String additionalNotes, String prescription) throws SQLException {
+    void completeAppointment(String appointmentID, float weight, float temperature, float oxygenLevel, String diagnosis, String additionalNotes, String prescription, float systolicBP, float diastolicBP) throws SQLException {
         pstmt = conn.prepareStatement("UPDATE appointments SET "
                 + "Weight = ?, "
-                + "BloodPressure = ?, "
                 + "Temperature = ?, "
                 + "OxygenLevel = ?, "
                 + "AdditionalNotes = ?, "
                 + "Diagnosis = ?, "
                 + "AppointmentStatus = 'COMPLETED', "
-                + "Prescription = ?"
+                + "Prescription = ?,"
+                + "SystolicBP = ?,"
+                + "DiastolicBP = ?"
                 + "WHERE AppointmentID = ?");
         
         pstmt.setFloat(1, weight);
-        pstmt.setFloat(2, bloodPressure);
-        pstmt.setFloat(3, temperature);
-        pstmt.setFloat(4, oxygenLevel);
-        pstmt.setString(5, additionalNotes);
-        pstmt.setString(6, diagnosis);
-        pstmt.setString(7, prescription);
-        pstmt.setString(8, appointmentID);
+        pstmt.setFloat(2, temperature);
+        pstmt.setFloat(3, oxygenLevel);
+        pstmt.setString(4, additionalNotes);
+        pstmt.setString(5, diagnosis);
+        pstmt.setString(6, prescription);
+        pstmt.setFloat(7, systolicBP);
+        pstmt.setFloat(8, diastolicBP);
+        pstmt.setString(9, appointmentID);
         pstmt.execute();
     }
 

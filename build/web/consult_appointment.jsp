@@ -119,17 +119,22 @@
                                 <div class="row">
                                     <div class="col-md-3">Weight (KG): </div>
                                     <div class="col-md-2"><input type="number" step="0.1" min="0.0" name="weight" class="form-control" ></div>
-                                    <div class="col-md-2">Blood Pressure (mmHg): </div>
-                                    <div class="col-md-2"><input type="number" step="0.1" min="0.0" name="bloodPressure" class="form-control" ></div>
+                                    <div class="col-md-2">Temperature (°C): </div>
+                                    <div class="col-md-2"><input type="number" step="0.1" min="0.0" name="temperature" class="form-control" ></div>
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <div class="col-md-3">Temperature (°C): </div>
-                                    <div class="col-md-2"><input type="number" step="0.1" min="0.0" name="temperature" class="form-control" ></div>
-                                    <div class="col-md-2">Oxygen Level (%):</div>
-                                    <div class="col-md-2"><input type="number" step="0.1" min="0.0" name="oxygenLevel" class="form-control" ></div>
+                                    <div class="col-md-3">Blood Pressure, Systolic (mmHg): </div>
+                                    <div class="col-md-2"><input type="number" step="0.1" min="0.0" name="systolicBP" class="form-control" ></div>
+                                    <div class="col-md-2">Blood Pressure, Diastolic (mmHg):</div>
+                                    <div class="col-md-2"><input type="number" step="0.1" min="0.0" name="diastolicBP" class="form-control" ></div>
                                 </div>
                                 <br>
+                                <div class="row">
+                                    <div class="col-md-3">Oxygen Level (%):</div>
+                                    <div class="col-md-2"><input type="number" step="0.1" min="0.0" name="oxygenLevel" class="form-control" ></div>
+                                </div>
+                                <hr>
                                 <div class="row">
                                     <div class="col-md-3">Diagnosis: </div><div class="col-md-6"><input name="diagnosis" type="text" class="form-control" ></div>
                                 </div>
