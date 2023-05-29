@@ -141,6 +141,8 @@
                                                             out.append("<Button type='submit' name='consultAppointment' value='"+ appointmentList.get(i).getAppointmentID() +"' class='btn btn-info btn-icon-split'><span class='text'>Consult</span></Button>");
                                                         }else if (appointmentList.get(i).getAppointmentStatus().equals("COMPLETED")){
                                                             out.append("<Button type='submit' name='viewAppointment' value='"+ appointmentList.get(i).getAppointmentID() +"' class='btn btn-light btn-icon-split'><span class='text'>View</span></Button>");
+                                                        }else if (appointmentList.get(i).getAppointmentStatus().equals("MISSED")){
+                                                            out.append("<Button type='submit' name='viewAppointment' value='"+ appointmentList.get(i).getAppointmentID() +"' class='btn btn-light btn-icon-split'><span class='text'>View</span></Button>");
                                                         }
                                                         %>
                                                     </td>
