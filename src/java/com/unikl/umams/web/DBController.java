@@ -58,8 +58,8 @@ public class DBController {
             if(count == 0){
                     // Create a Statement
                 pstmt = conn.prepareStatement("INSERT INTO patients ("
-                        + "PatientID, NRIC, Email, Password, FirstName, LastName, Ethnicity, PhoneNumber, Address, Height, BloodType) "
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                        + "PatientID, NRIC, Email, Password, FirstName, LastName, Ethnicity, PhoneNumber, Address, Height, BloodType, ChronicDiseases) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 pstmt.setString(1, IDGenerator.generatePatientID(10));
                 pstmt.setString(2, patient.getNRIC());
                 pstmt.setString(3, patient.getEmail());
@@ -71,6 +71,7 @@ public class DBController {
                 pstmt.setString(9, patient.getAddress());
                 pstmt.setFloat(10, patient.getHeight());
                 pstmt.setString(11, patient.getBloodType());
+                pstmt.setString(12, patient.getChronicIllnesses());
         
                 pstmt.executeUpdate();
                 stat = true;
@@ -443,6 +444,7 @@ public class DBController {
         patient.setAddress(rs.getString("Address"));
         patient.setHeight(rs.getFloat("Height"));
         patient.setBloodType(rs.getString("BloodType"));
+        patient.setChronicIllnesses(rs.getString("ChronicDiseases"));
         
         return patient;
     }
@@ -473,6 +475,24 @@ public class DBController {
         pstmt.setFloat(3, Float.valueOf(height));
         pstmt.setString(4, patientID);
         pstmt.execute();
+    }
+
+    JsonObject viewDrProfile(String doctorID) throws SQLException {
+        JsonObject response = new JsonObject();
+        pstmt = conn.prepareStatement("SELECT * FROM doctors WHERE DoctorID = ? ");
+        pstmt.setString(1, doctorID);
+        ResultSet rs =  pstmt.executeQuery();
+        rs.next();
+        
+        response.addProperty("name",rs.getString("FullName"));
+        response.addProperty("qualification",rs.getString("EducationBackground"));
+        response.addProperty("doctorID", rs.getString("DoctorID"));
+        response.addProperty("email", rs.getString("DoctorEmail"));
+        response.addProperty("phoneNumber", rs.getString("PhoneNumber"));
+        response.addProperty("location", rs.getString("Location"));
+        
+        return response;
+        
     }
     
 }

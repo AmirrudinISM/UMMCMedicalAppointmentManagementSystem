@@ -74,8 +74,9 @@ public class AndroidServlet extends HttpServlet {
             String address = request.getParameter("address");
             float height = Float.parseFloat(request.getParameter("height"));
             String bloodType = request.getParameter("bloodType");
-            System.out.println("Params received: " + nric + ", " + email+ ", " + bloodType.length());
-            Patient inPatient = new Patient( nric, email, password, firstName, lastName, ethnicity, phoneNumber, address, height, bloodType);
+            String chronicIllnesses = request.getParameter("chronicIllnesses");
+            System.out.println("Params received: " + nric + ", " + email+ ", " + bloodType.length() + ", " + chronicIllnesses);
+            Patient inPatient = new Patient( nric, email, password, firstName, lastName, ethnicity, phoneNumber, address, height, bloodType, chronicIllnesses);
         
             try {
                 db.createPatient(inPatient);
@@ -216,6 +217,24 @@ public class AndroidServlet extends HttpServlet {
             
             try {
                 db.updateProfile(patientID, phoneNumber, address, height);
+            } catch (SQLException ex) {
+                Logger.getLogger(AndroidServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        if(request.getParameter("action").equals("viewDoctor")){
+            String doctorID = request.getParameter("doctorID");
+            
+            JsonObject drJsonObject = new JsonObject();
+            try {
+                drJsonObject = db.viewDrProfile(doctorID);
+                Gson gson = new Gson();
+                String drInfo = gson.toJson(drJsonObject);
+                System.out.println(drInfo);
+                response.setContentType("text/plain");
+                PrintWriter out = response.getWriter();
+                out.print(drInfo);
+                out.flush();
             } catch (SQLException ex) {
                 Logger.getLogger(AndroidServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
